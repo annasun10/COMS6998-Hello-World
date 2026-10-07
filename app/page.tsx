@@ -1,8 +1,12 @@
+import Link from "next/link";
+import { createAuthClient } from "@/lib/supabase/server";
 import { connection } from "next/server";
 import { createSupabaseClient } from "@/lib/supabase";
 
 export default async function Home() {
   await connection();
+  const auth = await createAuthClient();
+  const { data: { user } } = await auth.auth.getUser();
 
   let games: { id: number | string; name: string | null; genre: string | null }[] = [];
   let failed = false;
@@ -37,6 +41,11 @@ export default async function Home() {
         </p>
       </header>
 
+      <section className="panel mb-10">
+        <h2 className="text-xl font-semibold">{user ? "Your player space is ready" : "A little more adventure awaits"}</h2>
+        <p className="mt-2 mb-4 text-zinc-600 dark:text-zinc-400">{user ? "Visit the members club or personalize your profile." : "Sign in to unlock the members club and create your player profile."}</p>
+        <Link className="button" href={user ? "/club" : "/login"}>{user ? "Enter the club" : "Join with Google"}</Link>
+      </section>
       {failed ? (
         <section role="alert" className="rounded-2xl border border-red-300 bg-red-50 p-6 text-red-900 dark:border-red-900 dark:bg-red-950 dark:text-red-100">
           <h2 className="text-lg font-semibold">Couldn’t load the games</h2>

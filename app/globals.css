@@ -24,3 +24,13 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.page-shell { width: 100%; max-width: 52rem; margin: 0 auto; padding: 4rem 1.5rem; }
+.eyebrow { color: #047857; font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; margin-bottom: 1rem; }
+.page-title { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 600; letter-spacing: -.035em; line-height: 1.15; }
+.panel { border: 1px solid #d4d4d8; border-radius: 1rem; padding: 2rem; }
+.button { display: inline-flex; align-items: center; justify-content: center; background: #047857; color: white; padding: .75rem 1.25rem; border-radius: .6rem; font-weight: 600; cursor: pointer; }
+.button:hover { background: #065f46; }
+.button:disabled { opacity: .6; cursor: wait; }
+.field { display: block; width: 100%; margin-top: .5rem; padding: .75rem; border: 1px solid #a1a1aa; border-radius: .5rem; background: transparent; font-weight: 400; }
+:focus-visible { outline: 3px solid #10b981; outline-offset: 3px; }
