@@ -34,3 +34,26 @@ body {
 .button:disabled { opacity: .6; cursor: wait; }
 .field { display: block; width: 100%; margin-top: .5rem; padding: .75rem; border: 1px solid #a1a1aa; border-radius: .5rem; background: transparent; font-weight: 400; }
 :focus-visible { outline: 3px solid #10b981; outline-offset: 3px; }
+
+.quest-shell { width: 100%; max-width: 70rem; margin: 0 auto; padding: 2rem 1.5rem 5rem; color: #182923; }
+.quest-hero { padding: 3rem 0 4rem; }
+.quest-hero h1 { font-size: clamp(2.8rem, 7vw, 5.8rem); font-weight: 700; letter-spacing: -.065em; line-height: 1.04; }
+.quest-hero h1 span { color: #047857; }
+.quest-generator { display: flex; flex-direction: column; gap: 1.5rem; padding: 2rem; border-radius: 1.3rem; background: #ecfdf5; border: 1px solid #b4dfca; }
+.quest-generator .button { align-self: flex-start; }
+.quest-card { padding: 1.7rem; border: 1px solid #d5ded8; border-radius: 1.2rem; background: #fff; overflow-wrap: anywhere; }
+.quest-tag { border-radius: 2rem; background: #eef2eb; color: #385244; padding: .35rem .7rem; }
+.vote-button { display: inline-flex; align-items: center; justify-content: center; padding: .6rem 1rem; border: 1px solid #a8beb0; border-radius: .6rem; color: #24523c; font-weight: 600; cursor: pointer; background: #fff; }
+.vote-button:hover { background: #ecfdf5; }
+.vote-button:disabled { opacity: .5; cursor: wait; }
+[aria-current="page"] { color: #047857; font-weight: 700; text-decoration: underline; text-underline-offset: .3rem; }
+@media (prefers-color-scheme: dark) {
+  .quest-shell { color: #e6f3eb; }
+  .quest-generator { background: #102b21; border-color: #345b46; }
+  .quest-card { background: #14221c; border-color: #345b46; }
+  .quest-shell .text-zinc-600, .quest-shell .text-zinc-500 { color: #b3c4b9; }
+  .quest-tag { background: #294333; color: #d4e8dc; }
+  .vote-button { background: #14221c; color: #bde8d0; }
+  .vote-button:hover { background: #294333; }
+  .quest-shell .text-emerald-800 { color: #6ee7b7; }
+}

@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Game Library",
-  description: "Browse a collection of games and discover your next adventure.",
+  title: "Side Quest NYC",
+  description: "AI-generated NYC mini-adventures, rated by the community.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
