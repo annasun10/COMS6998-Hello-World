@@ -1,0 +1,10 @@
+{
+  "description": "Discover personalized NYC activities by borough and mood, explore community ideas, and vote on favorites with a customizable user profile.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

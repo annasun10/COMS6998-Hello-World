@@ -1,11 +1,12 @@
 "use client";
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { createBrowserAuthClient } from "@/lib/supabase/browser";
 type Profile = { first_name: string | null; last_name: string | null; avatar_path: string | null };
 export default function ProfileForm({ profile, avatarUrl }: { profile: Profile; avatarUrl: string | null }) {
   const router = useRouter();
+  const photoInput = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [photo, setPhoto] = useState<File | null>(null);
@@ -36,7 +37,7 @@ export default function ProfileForm({ profile, avatarUrl }: { profile: Profile; 
       if (photo && profile.avatar_path) {
         await supabase.storage.from("avatars").remove([profile.avatar_path]).catch(() => undefined);
       }
-      router.replace("/club");
+      router.replace("/profile");
       router.refresh();
     } catch (error) {
       if (uploadedPath) await supabase.storage.from("avatars").remove([uploadedPath]);
@@ -44,13 +45,24 @@ export default function ProfileForm({ profile, avatarUrl }: { profile: Profile; 
     }
   }
   return <form onSubmit={save} className="panel space-y-6">
-    {avatarUrl && <Image unoptimized src={avatarUrl} alt="Your profile photo" width={96} height={96} className="h-24 w-24 rounded-full object-cover" />}
+    {avatarUrl && <Image unoptimized src={avatarUrl} alt="Your profile photo" width={96} height={96} className="h-24 w-24 rounded-full object-cover" style={{ width: 96, height: 96, borderRadius: "50%", objectFit: "cover", flexShrink: 0 }} />}
     <div className="grid gap-5 sm:grid-cols-2">
       <label className="block font-medium">First name<input className="field" name="first_name" autoComplete="given-name" required maxLength={100} defaultValue={profile.first_name || ""} disabled={busy} /></label>
       <label className="block font-medium">Last name<input className="field" name="last_name" autoComplete="family-name" required maxLength={100} defaultValue={profile.last_name || ""} disabled={busy} /></label>
     </div>
-    <label className="block font-medium">Profile photo<input className="field" type="file" accept="image/jpeg,image/png,image/webp" disabled={busy} onChange={(event) => setPhoto(event.target.files?.[0] || null)} /><span className="mt-2 block text-sm font-normal text-zinc-500">Optional. JPG, PNG, or WebP, up to 5 MB.</span></label>
+    <div>
+      <p id="profile-photo-label" className="font-medium">Profile photo</p>
+      <div className="profile-photo-picker">
+        <input ref={photoInput} type="file" hidden accept="image/jpeg,image/png,image/webp" disabled={busy} aria-labelledby="profile-photo-label" onChange={event => setPhoto(event.target.files?.[0] || null)} />
+        <button type="button" className="button profile-photo-button" disabled={busy} aria-label="Choose file for profile photo" aria-describedby="profile-photo-help" onClick={() => photoInput.current?.click()}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 16V4m-4 4 4-4 4 4M4 16v4h16v-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          Choose file
+        </button>
+        <span className="profile-photo-filename" role="status">{photo?.name || "No file selected"}</span>
+      </div>
+      <p id="profile-photo-help" className="mt-2 text-sm text-zinc-500">Optional. JPG, PNG, or WebP, up to 5 MB.</p>
+    </div>
     {error && <p role="alert" className="text-red-600">{error}</p>}
-    <button className="button" disabled={busy}>{busy ? "Saving…" : "Save profile & enter the club"}</button>
+    <button className="button" disabled={busy}>{busy ? "Saving…" : "Save Profile"}</button>
   </form>;
 }

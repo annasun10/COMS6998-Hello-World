@@ -43,8 +43,8 @@ export default async function Home() {
 
       <section className="panel mb-10">
         <h2 className="text-xl font-semibold">{user ? "Your player space is ready" : "A little more adventure awaits"}</h2>
-        <p className="mt-2 mb-4 text-zinc-600 dark:text-zinc-400">{user ? "Visit the members club or personalize your profile." : "Sign in to unlock the members club and create your player profile."}</p>
-        <Link className="button" href={user ? "/club" : "/login"}>{user ? "Enter the club" : "Join with Google"}</Link>
+        <p className="mt-2 mb-4 text-zinc-600 dark:text-zinc-400">{user ? "Make a NYC side quest or personalize your profile." : "Sign in to make a NYC side quest and create your player profile."}</p>
+        <Link className="button" href={user ? "/quests#create" : "/login"}>{user ? "Make a plan" : "Join with Google"}</Link>
       </section>
       {failed ? (
         <section role="alert" className="rounded-2xl border border-red-300 bg-red-50 p-6 text-red-900 dark:border-red-900 dark:bg-red-950 dark:text-red-100">

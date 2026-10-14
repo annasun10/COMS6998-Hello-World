@@ -32,13 +32,21 @@ do $$ begin
     insert into public.quest_votes(quest_id,user_id,value) values('00000000-0000-4000-8000-000000000003','00000000-0000-4000-8000-000000000002',-1);
     raise exception 'Duplicate vote allowed';
   exception when unique_violation then null; end;
+  perform public.cast_quest_vote('00000000-0000-4000-8000-000000000003', -1::smallint);
+  perform public.cast_quest_vote('00000000-0000-4000-8000-000000000003', -1::smallint);
+  if (select value from public.quest_votes where quest_id='00000000-0000-4000-8000-000000000003') <> -1 then raise exception 'Vote change failed'; end if;
+  if (select count(*) from public.quest_votes where quest_id='00000000-0000-4000-8000-000000000003') <> 1 then raise exception 'Vote change duplicated vote'; end if;
+  perform public.cast_quest_vote('00000000-0000-4000-8000-000000000003', 1::smallint);
   -- Generating more than five times is permitted.
   for i in 1..6 loop perform public.reserve_generation('test','test'); end loop;
 end $$;
 reset role;
 select set_config('request.jwt.claim.sub','00000000-0000-4000-8000-000000000001',true);
 set local role authenticated;
-do $$ begin
+do $$ declare n integer; begin
+  update public.quest_votes set value=-1 where user_id='00000000-0000-4000-8000-000000000002';
+  get diagnostics n = row_count;
+  if n <> 0 then raise exception 'Another user vote changed'; end if;
   if exists(select 1 from public.quest_votes where user_id='00000000-0000-4000-8000-000000000002') then raise exception 'Vote history leaked'; end if;
   insert into public.quest_votes(quest_id,user_id,value) values('00000000-0000-4000-8000-000000000003','00000000-0000-4000-8000-000000000001',1);
   if not exists (select 1 from public.quest_votes where user_id='00000000-0000-4000-8000-000000000001' and quest_id='00000000-0000-4000-8000-000000000003') then raise exception 'Self-vote not saved'; end if;
