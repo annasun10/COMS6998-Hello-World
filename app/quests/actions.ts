@@ -4,7 +4,8 @@ import { revalidatePath } from "next/cache";
 import { createAuthClient } from "@/lib/supabase/server";
 import { supabaseConfig } from "@/lib/supabase/config";
 import { generateQuest } from "@/lib/gemini";
-import { systemPrompt, validatePreferences } from "@/lib/quest-validation";
+import { validatePreferences } from "@/lib/quest-validation";
+import { systemPrompt } from "@/lib/quest-prompt";
 export type ActionState = { error?: string; success?: string; vote?: number };
 export async function createQuest(_previous: ActionState, form: FormData): Promise<ActionState> {
   const supabase = await createAuthClient();
@@ -26,7 +27,7 @@ export async function createQuest(_previous: ActionState, form: FormData): Promi
     return { error: error instanceof Error && error.name === "TimeoutError" ? "AI took too long. Try again later." : error instanceof Error ? error.message : "Generation failed. Please try again." };
   }
   revalidatePath("/quests");
-  return { success: "Your side quest is live! Find it in the New feed below." };
+  return { success: "Your side quest is live! Find it under My plans or in Community ideas." };
 }
 export async function voteQuest(_previous: ActionState, form: FormData): Promise<ActionState> {
   const supabase = await createAuthClient();

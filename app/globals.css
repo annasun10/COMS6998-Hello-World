@@ -56,18 +56,25 @@ a, button { transition: background .2s, color .2s, transform .2s, box-shadow .2s
 .generator-preview div { border: 2px solid #e4d7e7; border-radius: 12px; background: white; padding: 16px; }
 .generator-preview span { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
 .generator-preview strong { font-size: 14px; }
-#feed { max-width: 1280px; margin: auto; padding: 112px 40px; scroll-margin-top: 24px; }
+#feed, #my-plans { max-width: 1280px; margin: auto; padding: 112px 40px; scroll-margin-top: 24px; }
+#feed.feed-with-my-plans { padding-bottom: clamp(32px, 5vw, 56px); }
+#my-plans { display: grid; gap: 24px; padding-block: 0 clamp(40px, 6vw, 72px); }
+#my-plans .quest-grid { align-items: start; }
+#my-plans .mini-plan + .mini-plan { margin-top: 10px; }
 .feed-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px; }
 .feed-title { font-size: clamp(2.25rem, 4vw, 3rem); font-weight: 700; letter-spacing: -.035em; line-height: 1.1; }
 .feed-sorting { display: flex; gap: 8px; font-size: 14px; font-weight: 600; background: #f7ebf4; padding: 6px; border-radius: 99px; }
 .feed-sorting a { padding: 8px 16px; border-radius: 99px; }
 [aria-current="page"] { color: #bd226e; font-weight: 700; background: white; }
 .feed-description { max-width: 530px; color: var(--muted); font-size: 14px; line-height: 1.7; margin-top: 20px; }
+.feed-search { margin-top: 28px; }
+.feed-search-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 8px; }
+.feed-search-controls .field { flex: 1 1 240px; max-width: 420px; margin-top: 0; }
+.feed-filters legend { margin-bottom: 12px; }
 .feed-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 28px 0; }
 .quest-grid { display: grid; gap: 24px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .quest-card { border: 1px solid #eaddea; border-radius: 24px; background: white; overflow: hidden; overflow-wrap: anywhere; transition: transform .2s, box-shadow .2s; }
 .quest-card:hover { transform: translateY(-4px); box-shadow: 0 15px 30px #39264a12; }
-.quest-card-photo { width: 100%; height: 224px; object-fit: cover; }
 .quest-card-content { padding: 24px; }
 .quest-card h3 { line-height: 1.15; }
 .quest-card-content > p { font-size: 14px; color: var(--muted); }
@@ -84,14 +91,14 @@ a, button { transition: background .2s, color .2s, transform .2s, box-shadow .2s
   .quest-hero { padding: 48px 24px 80px; grid-template-columns: 1fr; gap: 52px; min-height: auto; }
   .hero-description { font-size: 18px; } .hero-photo { max-width: 480px; height: 430px; width: calc(100% - 24px); }
   .generator-section { padding: 80px 24px; } .generator-layout { grid-template-columns: 1fr; gap: 36px; }
-  #feed { padding: 80px 24px; } .quest-generator { padding: 24px; }
+  #feed, #my-plans { padding-inline: 24px; } #feed { padding-block: 80px; } .quest-generator { padding: 24px; }
 }
 @media (max-width: 550px) { .quest-grid { grid-template-columns: 1fr; } .hero-photo { height: 380px; } .hero-photo-note strong { font-size: 21px; } .hero-photo-note { left: -12px; } .generator-preview { grid-template-columns: 1fr; } .feed-filters label { width: 100%; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } }
 
 .site-header-sticky { position: sticky; top: 0; z-index: 50; flex-shrink: 0; width: 100%; background: #fff7fcf2; backdrop-filter: blur(16px); border-bottom: 1px solid #eaddea; box-shadow: 0 4px 20px #39264a06; }
 .site-header-sticky .site-header { margin: 0 auto; }
-#create, #feed { scroll-margin-top: 100px; }
+#create, #feed, #my-plans { scroll-margin-top: 100px; }
 .idea-select-label { display: flex; flex-direction: column; gap: 8px; }
 .idea-select-wrap { position: relative; display: block; }
 .idea-select-wrap .idea-select { margin-top: 0; appearance: none; padding: 17px 42px 17px 46px; border-radius: 16px; border-color: #e9dbea; font-size: 15px; font-weight: 600; box-shadow: 0 3px 0 #39264a05; transition: border-color .2s, box-shadow .2s, background .2s; }
@@ -101,6 +108,9 @@ a, button { transition: background .2s, color .2s, transform .2s, box-shadow .2s
 .idea-select-icon, .idea-select-chevron { position: absolute; top: 50%; transform: translateY(-50%); pointer-events: none; color: #bd226e; }
 .idea-select-icon { left: 17px; font-size: 20px; }
 .idea-select-chevron { right: 17px; }
+.idea-select-placeholder { color: var(--muted); }
+.invite-friend-picker .idea-select { position: relative; }
+.invite-friend-picker .idea-select-menu { position: static; margin-top: 8px; box-shadow: none; }
 .idea-select-hint { color: var(--muted); font-size: 11px; font-weight: 400; }
 /* Custom menus keep the same presentation across browsers. */
 .idea-select-wrap .idea-select { text-align: left; min-height: 58px; }
@@ -113,10 +123,9 @@ a, button { transition: background .2s, color .2s, transform .2s, box-shadow .2s
 .idea-select-option.is-active { background: #f3eafa; color: #39264a; }
 .idea-select-option[aria-selected="true"].is-active { background: #f9d6ea; color: #a91c61; }
 .idea-select-check { display: grid; place-items: center; width: 20px; height: 20px; color: #bd226e; font-size: 14px; }
-@media (max-width: 800px) { #create, #feed { scroll-margin-top: 145px; } }
+@media (max-width: 800px) { #create, #feed, #my-plans { scroll-margin-top: 145px; } }
 
 .feed-filters > .idea-select-label { width: 270px; max-width: 100%; font-size: 14px; font-weight: 600; }
-.feed-filters > .vote-button { min-height: 58px; padding: 0 24px; border-radius: 16px; }
 @media (max-width: 550px) { .feed-filters > .idea-select-label { width: 100%; } }
 
 .profile-photo-picker { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 8px; padding: 12px; border: 2px solid #e4d7e7; border-radius: 14px; background: #fffbfe; }
@@ -135,7 +144,22 @@ a, button { transition: background .2s, color .2s, transform .2s, box-shadow .2s
 
 .quest-card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .quest-card-tags .quest-tag { padding: 5px 9px; border-radius: 8px; background: #fce5f2; font-size: 10px; letter-spacing: .02em; text-transform: none; font-weight: 600; }
-.quest-card-tags .quest-tag-ai { background: #f3eafa; color: #715083; }
+.quest-card-tags [data-borough="Manhattan"] { background: #dbeafe; color: #1e40af; }
+.quest-card-tags [data-borough="Brooklyn"] { background: #ffedd5; color: #9a3412; }
+.quest-card-tags [data-borough="Queens"] { background: #ccfbf1; color: #115e59; }
+.quest-card-tags [data-borough="The Bronx"] { background: #ede9fe; color: #5b21b6; }
+.quest-card-tags [data-borough="Staten Island"] { background: #e2e8f0; color: #334155; }
+.quest-card-tags [data-mood="Quiet solo reset"],
+.quest-card-tags [data-mood="Cozy"] { background: #e0e7ff; color: #3730a3; }
+.quest-card-tags [data-mood="Catch up with friends"],
+.quest-card-tags [data-mood="Social"] { background: #fef3c7; color: #854d0e; }
+.quest-card-tags [data-mood="Discover hidden corners"],
+.quest-card-tags [data-mood="Curious"] { background: #cffafe; color: #155e75; }
+.quest-card-tags [data-mood="Art & creative inspiration"] { background: #fae8ff; color: #86198f; }
+.quest-card-tags [data-mood="Nature & fresh air"] { background: #dcfce7; color: #166534; }
+.quest-card-tags [data-mood="Active city walk"],
+.quest-card-tags [data-mood="Main character"] { background: #ecfccb; color: #3f6212; }
+.quest-card-tags [data-mood="Romantic afternoon"] { background: #ffe4e6; color: #9f1239; }
 .quest-card-content > h3 { font-size: 23px; line-height: 1.2; margin-top: 18px; }
 .quest-card-content > p { line-height: 1.7; }
 .mini-plan { margin-top: 22px; padding: 16px; background: #fff7fc; border: 1px solid #efdfed; border-radius: 16px; }
@@ -148,3 +172,11 @@ a, button { transition: background .2s, color .2s, transform .2s, box-shadow .2s
 .mini-plan-number { display: grid; place-items: center; width: 28px; height: 28px; background: #f5b8da; border-radius: 50%; color: #8c174f; font-size: 11px; font-weight: 800; }
 .mini-plan-steps p { margin: 0; font-size: 13px; line-height: 1.75; color: #584461; white-space: pre-line; }
 .mini-plan-note { margin-top: 18px; padding-top: 12px; border-top: 1px solid #efdfed; font-size: 11px; line-height: 1.6; color: #806c87; }
+
+.friends-page { width: 100%; max-width: 800px; margin-inline: auto; padding: clamp(32px, 5vw, 64px) 24px 64px; }
+.friends-search { margin-top: 24px; }
+.friends-search-controls { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; margin-top: 8px; }
+.friends-search-controls .field { min-width: 0; margin-top: 0; }
+.friends-search-controls .vote-button { padding-inline: 20px; border-radius: 12px; }
+.friends-section { display: grid; gap: 8px; margin-top: 24px; }
+.friends-search + .friends-section { margin-top: 32px; }
